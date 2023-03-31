@@ -1,10 +1,10 @@
 trigger:
   - '*'
   
-variables:
+  variables:
     buildConfiguration: 'Release'
   
-stages:
+  stages:
   - stage: 'Build'
     displayName: 'Build the web application'
     jobs: 
@@ -71,7 +71,7 @@ stages:
     jobs:
     - deployment: Deploy
       pool:
-        vmImage: 'ubuntu-20.4'
+        vmImage: 'ubuntu-20.04'
       environment: dev
       variables:
       - group: Release
