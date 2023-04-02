@@ -11,7 +11,7 @@ stages:
     - job: 'Build'
       displayName: 'Build job'
       pool:
-        vmImage: 'ubuntu-latest'
+        vmImage: 'ubuntu-20.04'
         demands:
         - npm
   
@@ -64,26 +64,3 @@ stages:
   
       - publish: '$(Build.ArtifactStagingDirectory)'
         artifact: drop
-  
-  - stage: 'Deploy'
-    displayName: 'Deploy the web application'
-    dependsOn: Build
-    jobs:
-    - deployment: Deploy
-      pool:
-        vmImage: 'ubuntu-latest'
-      environment: dev
-      variables:
-      - group: Release
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - download: current
-              artifact: drop
-            - task: AzureWebApp@1
-              displayName: 'Azure App Service Deploy: website'
-              inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
-                appName: '$(sahomelabs-Space Game - web - Release-ebadc40f-c973-4ec3-802d-d17d59e6d9dd)'
-                package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
